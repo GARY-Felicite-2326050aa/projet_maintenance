@@ -1,0 +1,59 @@
+name: Symfony CI/CD
+
+on:
+  push:
+    branches: [ "main", "develop", "feature/*" ]
+  pull_request:
+    branches: [ "main", "develop", "feature/*" ]
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1️⃣ Checkout du code
+      - uses: actions/checkout@v4
+
+      # 2️⃣ Installer PHP
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          coverage: none
+
+      # 3️⃣ Cacher les dépendances pour accélérer
+      - name: Cache Composer packages
+        uses: actions/cache@v3
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-
+
+      # 4️⃣ Installer les dépendances composer
+      - name: Install Dependencies
+        run: composer install --no-interaction --prefer-dist
+
+      # 5️⃣ Copier .env.test pour les tests
+      - name: Copy .env.test.local
+        run: php -r "file_exists('.env.test.local') || copy('.env.test', '.env.test.local');"
+
+      # 6️⃣ Créer base SQLite pour tests
+      - name: Create Database
+        run: |
+          mkdir -p data
+          touch data/database.sqlite
+
+      # 7️⃣ Linter : PHP-CS-Fixer
+      - name: PHP-CS-Fixer (dry-run)
+        run: vendor/bin/php-cs-fixer fix --dry-run --diff
+
+      # 8️⃣ Analyse statique : PHPStan niveau 6
+      - name: PHPStan (static analysis)
+        run: vendor/bin/phpstan analyse
+
+      # 9️⃣ Tests unitaires et fonctionnels
+      - name: Execute PHPUnit
+        env:
+          DATABASE_URL: sqlite:///%kernel.project_dir%/data/database.sqlite
+        run: vendor/bin/phpunit --colors=always
