@@ -1,0 +1,23 @@
+#!/bin/sh
+cd "$(git rev-parse --show-toplevel)"
+
+# Vérifie que PHP-CS-Fixer existe
+if [ -f vendor/bin/php-cs-fixer ]; then
+    echo "🔹 Vérification PHP-CS-Fixer..."
+    vendor/bin/php-cs-fixer fix --dry-run --diff
+fi
+
+# Vérifie que PHPStan existe
+if [ -f vendor/bin/phpstan ]; then
+    echo "🔹 Vérification PHPStan..."
+    vendor/bin/phpstan analyse
+fi
+
+# Vérifie que PHPUnit existe
+if [ -f vendor/bin/phpunit ]; then
+    echo "🔹 Lancement PHPUnit..."
+    vendor/bin/phpunit
+fi
+
+echo "✔ Tout est OK. Commit autorisé."
+exit 0
