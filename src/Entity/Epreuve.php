@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use App\Repository\ChampionnatsRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
@@ -20,12 +19,10 @@ class Epreuve
     #[ORM\JoinColumn(nullable: false)]
     private ?Competition $competition = null;
 
-
     public function getId(): ?int
     {
         return $this->id;
     }
-    
 
     public function getNom(): ?string
     {

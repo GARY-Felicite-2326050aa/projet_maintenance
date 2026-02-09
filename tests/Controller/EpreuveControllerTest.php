@@ -13,7 +13,7 @@ final class EpreuveControllerTest extends WebTestCase
     private KernelBrowser $client;
     private EntityManagerInterface $manager;
     private EntityRepository $epreuveRepository;
-    private string $path = '/y/';
+    private string $path = '/epreuve/';
 
     protected function setUp(): void
     {
