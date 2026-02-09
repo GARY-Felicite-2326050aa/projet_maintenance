@@ -6,6 +6,9 @@ use App\Enum\TypeSport;
 use App\Repository\SportRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+
 
 #[ORM\Entity(repositoryClass: SportRepository::class)]
 class Sport
@@ -21,10 +24,19 @@ class Sport
     #[ORM\Column(type: Types::SIMPLE_ARRAY, enumType: TypeSport::class)]
     private array $type = [];
 
+    #[ORM\OneToMany(mappedBy: 'sport', targetEntity: Championnats::class)]
+    private Collection $championnats;
+
+    public function __construct()
+    {
+        $this->championnats = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
     }
+    
 
     public function getNom(): ?string
     {

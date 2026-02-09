@@ -16,6 +16,18 @@ class Competition
     #[ORM\Column(length: 255)]
     private ?string $nom = null;
 
+    #[ORM\ManyToOne(inversedBy: 'competitions')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Championnats $championnat = null;
+
+    #[ORM\OneToMany(mappedBy: 'competition', targetEntity: Epreuve::class)]
+    private Collection $epreuves;
+
+    public function __construct()
+    {
+        $this->epreuves = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;

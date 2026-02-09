@@ -5,8 +5,8 @@ namespace App\Entity;
 use App\Repository\ChampionnatsRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: ChampionnatsRepository::class)]
-class Championnats
+#[ORM\Entity]
+class Epreuve
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -16,22 +16,16 @@ class Championnats
     #[ORM\Column(length: 255)]
     private ?string $nom = null;
 
-    #[ORM\ManyToOne(inversedBy: 'championnats')]
+    #[ORM\ManyToOne(inversedBy: 'epreuves')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Sport $sport = null;
+    private ?Competition $competition = null;
 
-    #[ORM\OneToMany(mappedBy: 'championnat', targetEntity: Competition::class)]
-    private Collection $competitions;
-
-    public function __construct()
-    {
-        $this->competitions = new ArrayCollection();
-    }
 
     public function getId(): ?int
     {
         return $this->id;
     }
+    
 
     public function getNom(): ?string
     {
