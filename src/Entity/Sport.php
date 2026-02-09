@@ -4,11 +4,10 @@ namespace App\Entity;
 
 use App\Enum\TypeSport;
 use App\Repository\SportRepository;
-use Doctrine\DBAL\Types\Types;
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-
+use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: SportRepository::class)]
 class Sport
@@ -36,7 +35,6 @@ class Sport
     {
         return $this->id;
     }
-    
 
     public function getNom(): ?string
     {

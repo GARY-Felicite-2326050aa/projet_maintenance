@@ -3,7 +3,6 @@
 namespace App\Tests\Controller;
 
 use App\Entity\Sport;
-use App\Repository\SportRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
