@@ -124,17 +124,6 @@ vendor/bin/phpmetrics --report-html=metrics src
 
 ---
 
-## Exécution des tests Python (optionnel)
-
-Pour certains scripts ou tests Python inclus dans le projet :
-
-```bash
-python3 <script.py>
-# ou via Anaconda
-Anaconda3 <script.py>
-```
-
----
 
 ## Remarques importantes
 
