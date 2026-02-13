@@ -7,7 +7,9 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Competition>
+ * Repository pour l'entité Sport.
+ *
+ * @extends ServiceEntityRepository<Sport>
  */
 class CompetitionRepository extends ServiceEntityRepository
 {

@@ -2,13 +2,16 @@
 
 namespace App\Form;
 
-use App\Entity\Competition;
 use App\Entity\Epreuve;
+use App\Entity\Competition;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * Formulaire pour l'entité Epreuve
+ */
 class EpreuveType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -18,8 +21,7 @@ class EpreuveType extends AbstractType
             ->add('competition', EntityType::class, [
                 'class' => Competition::class,
                 'choice_label' => 'id',
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

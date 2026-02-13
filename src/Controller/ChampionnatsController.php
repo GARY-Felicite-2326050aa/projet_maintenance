@@ -10,19 +10,37 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use App\Repository\SportRepository;
 
+/**
+ * Controller pour gérer les Championnats
+ */
 #[Route('/championnats')]
 final class ChampionnatsController extends AbstractController
 {
     #[Route(name: 'app_championnats_index', methods: ['GET'])]
-    public function index(ChampionnatsRepository $championnatsRepository): Response
+    /**
+     * Affiche la liste des championnats, filtrable par sport
+     */
+    public function index(Request $request, ChampionnatsRepository $championnatsRepository, SportRepository $sportRepository): Response
     {
+        $sportId = $request->query->get('sport');
+        $championnats = $sportId
+            ? $championnatsRepository->findBy(['sport' => $sportId])
+            : $championnatsRepository->findAll();
+
+        $sports = $sportRepository->findAll();
+
         return $this->render('championnats/index.html.twig', [
-            'championnats' => $championnatsRepository->findAll(),
+            'championnats' => $championnats,
+            'sports' => $sports,
         ]);
     }
 
     #[Route('/new', name: 'app_championnats_new', methods: ['GET', 'POST'])]
+    /**
+     * Création d'un nouveau championnat
+     */
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $championnat = new Championnats();
@@ -43,6 +61,9 @@ final class ChampionnatsController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_championnats_show', methods: ['GET'])]
+    /**
+     * Affiche les détails d'un championnat
+     */
     public function show(Championnats $championnat): Response
     {
         return $this->render('championnats/show.html.twig', [
@@ -51,6 +72,9 @@ final class ChampionnatsController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_championnats_edit', methods: ['GET', 'POST'])]
+    /**
+     * Modification d'un championnat existant
+     */
     public function edit(Request $request, Championnats $championnat, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(ChampionnatsType::class, $championnat);
@@ -69,6 +93,9 @@ final class ChampionnatsController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_championnats_delete', methods: ['POST'])]
+    /**
+     * Suppression d'un championnat
+     */
     public function delete(Request $request, Championnats $championnat, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$championnat->getId(), $request->getPayload()->getString('_token'))) {

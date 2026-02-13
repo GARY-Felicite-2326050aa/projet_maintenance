@@ -1,35 +1,62 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Championnats index{% endblock %}
+{% block title %}Liste des Championnats{% endblock %}
 
 {% block body %}
-    <h1>Championnats index</h1>
+    <h1>Liste des Championnats</h1>
 
-    <table class="table">
+    <div class="mb-3">
+        <a href="{{ path('app_championnats_new') }}" class="btn btn-success">Créer un championnat</a>
+    </div>
+
+    <form method="get" class="mb-3">
+        <label for="sportFilter" class="form-label">Filtrer par sport</label>
+        <select id="sportFilter" name="sport" class="form-select" onchange="this.form.submit()">
+            <option value="">Tous les sports</option>
+            {% for sport in sports %}
+                <option value="{{ sport.id }}" {% if app.request.get('sport') == sport.id %}selected{% endif %}>{{ sport.nom }}</option>
+            {% endfor %}
+        </select>
+    </form>
+
+    <table class="table table-striped">
         <thead>
-            <tr>
-                <th>Id</th>
-                <th>Nom</th>
-                <th>actions</th>
-            </tr>
+        <tr>
+            <th>Nom du championnat</th>
+            <th>Sport</th>
+            <th>Compétitions / Épreuves</th>
+            <th>Actions</th>
+        </tr>
         </thead>
         <tbody>
         {% for championnat in championnats %}
             <tr>
-                <td>{{ championnat.id }}</td>
                 <td>{{ championnat.nom }}</td>
+                <td>{{ championnat.sport.nom }}</td>
                 <td>
-                    <a href="{{ path('app_championnats_show', {'id': championnat.id}) }}">show</a>
-                    <a href="{{ path('app_championnats_edit', {'id': championnat.id}) }}">edit</a>
+                    <ul>
+                        {% for competition in championnat.competitions %}
+                            <li>
+                                {{ competition.nom }}
+                                <ul>
+                                    {% for epreuve in competition.epreuves %}
+                                        <li>{{ epreuve.nom }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </li>
+                        {% endfor %}
+                    </ul>
                 </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="3">no records found</td>
+                <td>
+                    <a href="{{ path('app_championnats_show', {id: championnat.id}) }}" class="btn btn-primary btn-sm">Voir</a>
+                    <a href="{{ path('app_championnats_edit', {id: championnat.id}) }}" class="btn btn-warning btn-sm">Modifier</a>
+                    <form method="post" action="{{ path('app_championnats_delete', {id: championnat.id}) }}" style="display:inline-block;">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ championnat.id) }}">
+                        <button class="btn btn-danger btn-sm">Supprimer</button>
+                    </form>
+                </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
-
-    <a href="{{ path('app_championnats_new') }}">Create new</a>
 {% endblock %}

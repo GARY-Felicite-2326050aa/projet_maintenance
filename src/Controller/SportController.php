@@ -11,10 +11,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
+/**
+ * Controller pour gérer les sports
+ */
 #[Route('/sport')]
 final class SportController extends AbstractController
 {
     #[Route(name: 'app_sport_index', methods: ['GET'])]
+    /** Liste tous les sports */
     public function index(SportRepository $sportRepository): Response
     {
         return $this->render('sport/index.html.twig', [
@@ -23,6 +27,7 @@ final class SportController extends AbstractController
     }
 
     #[Route('/new', name: 'app_sport_new', methods: ['GET', 'POST'])]
+    /** Création d'un sport */
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $sport = new Sport();
@@ -43,6 +48,7 @@ final class SportController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_sport_show', methods: ['GET'])]
+    /** Affiche un sport */
     public function show(Sport $sport): Response
     {
         return $this->render('sport/show.html.twig', [
@@ -51,6 +57,7 @@ final class SportController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_sport_edit', methods: ['GET', 'POST'])]
+    /** Modification d'un sport */
     public function edit(Request $request, Sport $sport, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(SportType::class, $sport);
@@ -69,6 +76,7 @@ final class SportController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_sport_delete', methods: ['POST'])]
+    /** Suppression d'un sport */
     public function delete(Request $request, Sport $sport, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$sport->getId(), $request->getPayload()->getString('_token'))) {
