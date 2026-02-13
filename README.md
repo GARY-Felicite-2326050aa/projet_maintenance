@@ -1,6 +1,4 @@
-Bien sûr ! Voici un exemple de **README.md** structuré et clair pour ton projet Symfony, incluant l’installation, l’exécution des tests, le hook script, et les métriques avec PHP Metrics. J’ai intégré les détails que tu as fournis.
 
----
 
 # Projet Maintenance Symfony
 
