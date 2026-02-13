@@ -4,7 +4,7 @@
 
 ## Description
 
-Ce projet est développé en **Symfony 6** avec **PHP 8.3**.
+Ce projet est développé en **Symfony 7.4** avec **PHP 8.3**.
 Il contient des fonctionnalités CRUD pour les entités **Sport** et **Épreuve**, ainsi que des tests automatisés avec **PHPUnit** et des métriques de qualité avec **PHP Metrics**.
 
 ---
