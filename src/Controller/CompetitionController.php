@@ -11,10 +11,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
+/**
+ * Controller pour gérer les compétitions
+ */
 #[Route('/competition')]
 final class CompetitionController extends AbstractController
 {
     #[Route(name: 'app_competition_index', methods: ['GET'])]
+    /** Liste toutes les compétitions */
     public function index(CompetitionRepository $competitionRepository): Response
     {
         return $this->render('competition/index.html.twig', [
@@ -23,6 +27,7 @@ final class CompetitionController extends AbstractController
     }
 
     #[Route('/new', name: 'app_competition_new', methods: ['GET', 'POST'])]
+    /** Création d'une nouvelle compétition */
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $competition = new Competition();
@@ -43,6 +48,7 @@ final class CompetitionController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_competition_show', methods: ['GET'])]
+    /** Affiche une compétition */
     public function show(Competition $competition): Response
     {
         return $this->render('competition/show.html.twig', [
@@ -51,6 +57,7 @@ final class CompetitionController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_competition_edit', methods: ['GET', 'POST'])]
+    /** Modification d'une compétition */
     public function edit(Request $request, Competition $competition, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(CompetitionType::class, $competition);
@@ -69,6 +76,7 @@ final class CompetitionController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_competition_delete', methods: ['POST'])]
+    /** Suppression d'une compétition */
     public function delete(Request $request, Competition $competition, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$competition->getId(), $request->getPayload()->getString('_token'))) {

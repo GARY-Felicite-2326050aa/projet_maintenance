@@ -1,11 +1,15 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Championnats{% endblock %}
+{% block title %}Créer un Championnat{% endblock %}
 
 {% block body %}
-    <h1>Create new Championnats</h1>
+    <h1>Créer un Championnat</h1>
 
-    {{ include('championnats/_form.html.twig') }}
+    {{ form_start(form) }}
+    {{ form_row(form.nom) }}
+    {{ form_row(form.sport) }}
+    <button class="btn btn-success">Enregistrer</button>
+    {{ form_end(form) }}
 
-    <a href="{{ path('app_championnats_index') }}">back to list</a>
+    <a href="{{ path('app_championnats_index') }}" class="btn btn-secondary mt-2">Retour à la liste</a>
 {% endblock %}

@@ -9,12 +9,18 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
+/**
+ * Entité Sport
+ *
+ * @property int $id
+ * @property string $nom
+ * @property TypeSport[] $type
+ * @property Collection<Championnats> $championnats
+ */
 #[ORM\Entity(repositoryClass: SportRepository::class)]
 class Sport
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Id, ORM\GeneratedValue, ORM\Column]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
@@ -31,35 +37,30 @@ class Sport
         $this->championnats = new ArrayCollection();
     }
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
+    public function getId(): ?int { return $this->id; }
+    public function getNom(): ?string { return $this->nom; }
+    public function setNom(string $nom): static { $this->nom = $nom; return $this; }
 
-    public function getNom(): ?string
-    {
-        return $this->nom;
-    }
+    /** @return TypeSport[] */
+    public function getType(): array { return $this->type; }
+    public function setType(array $type): static { $this->type = $type; return $this; }
 
-    public function setNom(string $nom): static
+    public function getChampionnats(): Collection { return $this->championnats; }
+    public function addChampionnat(Championnats $championnat): static
     {
-        $this->nom = $nom;
-
+        if (!$this->championnats->contains($championnat)) {
+            $this->championnats->add($championnat);
+            $championnat->setSport($this);
+        }
         return $this;
     }
-
-    /**
-     * @return TypeSport[]
-     */
-    public function getType(): array
+    public function removeChampionnat(Championnats $championnat): static
     {
-        return $this->type;
-    }
-
-    public function setType(array $type): static
-    {
-        $this->type = $type;
-
+        if ($this->championnats->removeElement($championnat)) {
+            if ($championnat->getSport() === $this) {
+                $championnat->setSport(null);
+            }
+        }
         return $this;
     }
 }
